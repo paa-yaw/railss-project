@@ -1,0 +1,13 @@
+//= require ./home/jquery-min
+//= require jquery_ujs
+//= require ./home/bootstrap.min
+//= require ./home/jquery.nav
+//= require ./home/owl.carousel
+//= require wow
+//= require ./home/jquery.mixitup
+//= require ./home/lightbox.min
+//= require ./home/scroll-top
+//= require ./home/smooth-scroll
+//= require ./home/style.changer
+//= require ./home/modernizr-2.8.0.main
+//= require ./home/main

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <title>Spring</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= stylesheet_link_tag "admin/application", media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag "admin/application", 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+  <meta name="google-site-verification" content="ekk5nq_UoqHnmI-X2AO7JNLZsgclWEvyO1Y5OTweFQ4" />
+  <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/raty/2.7.0/jquery.raty.min.js"></script> -->
+  <script type="text/javascript" src="app/assets/javascripts/jquery.raty.min.js"></script>
+</head>
+<body>
+<% flash.each do |key, message| %>
+    <p style="position:absolute; z-index:10000; margin:0 auto;left:0; right:0; width:40%; background:#BDE5F8; color:#00529B; padding:10px;" class="well well-sm text-center" id="flashmessage">
+      <%= message %>
+    </p>
+ <% end %>
+  <!-- container section start -->
+  <section id="container" class="">
+     
+      
+      <header class="header dark-bg">
+            <div class="toggle-nav">
+                <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><i class="fa fa-bars"></i></div>
+            </div>
+
+            <!--logo start-->
+            <a href="/admin" class="logo">Spring <span class="lite">Admin</span></a>
+            <!--logo end-->
+
+            <div class="nav search-row" id="top_menu">
+                <!--  search form start -->
+                <ul class="nav top-menu">                    
+                    <li>
+                        <!-- <form class="navbar-form">
+                            <input class="form-control" placeholder="Search" type="text">
+                        </form> -->
+                        <%= link_to fa_icon("pencil") + " Write A Blog Post", new_admin_client_article_path(current_client) %>
+                    </li>  
+                    <li>
+                      <%= link_to fa_icon("eye") + " View Blog Posts", admin_articles_path %>
+                    </li>                  
+                </ul>
+                <!--  search form end -->                
+            </div>
+
+            <div class="top-nav notification-row">                
+                <!-- notificatoin dropdown start-->
+                <ul class="nav pull-right top-menu">
+                    
+                    <!-- task notificatoin start -->
+
+                    <!-- task notificatoin end -->
+                    <!-- inbox notificatoin start-->
+                    
+                    <!-- inbox notificatoin end -->
+                    <!-- alert notification start-->
+                    <li id="alert_notificatoin_bar" class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+
+                            <i class="fa fa-bell aria-hidden="true""></i>
+                            <span class="badge bg-important"><%= Request.joins(:client).where(status: "unresolved").count %></span>
+                        </a>
+                        <ul class="dropdown-menu extended notification">
+                            <div class="notify-arrow notify-arrow-blue"></div>
+                            <li>
+                                <p class="blue">You have <%= pluralize(Request.joins(:client).where(status: "unresolved").count, "unresolved request") %></p>
+                            </li>
+                        </ul>
+                    </li>    
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" >
+                            <span class="username">Hi, <%= current_client.first_name %> <%= current_client.last_name %></span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu extended logout">
+                            <div class="log-arrow-up"></div>
+                            <li class="eborder-top">
+                                <a href=""><i class="fa fa-user"></i> My Profile</a>
+                            </li>
+                            <li>
+                                <%= link_to  fa_icon("power-off") + "Log Out", destroy_client_session_path, method: :delete,
+                              data: {confirm: "#{current_client.first_name}, are you sure you want to log out?"} %>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                </ul>
+               
+            </div>
+      </header>      
+      
+
+      
+      <aside>
+          <div id="sidebar"  class="nav-collapse ">
+              
+              <ul class="sidebar-menu">                
+                  <li class="active">
+                      <a class="" href="/admin">
+                          <i class="fa fa-tachometer"></i>
+                          <span>Dashboard</span>
+                      </a>
+                  </li>
+                  
+                  <li>
+                          <span><%= link_to fa_icon("folder-open-o") + "Requests", admin_requests_path %> </span>
+                  </li>
+                  <!-- <li>
+                          <span><%#= link_to fa_icon("files-o") + "State of Requests", admin_state_of_requests_path %></span>
+                  </li> -->
+                  <li>
+                          <span><%= link_to fa_icon("users") + "Workers", admin_workers_path %></span>
+                  </li>
+                   <li>                     
+                          <span><%= link_to fa_icon("user") + "Workers' History", admin_workers_history_path %></span>                     
+                  </li>
+                  <li>                     
+                          <span><%= link_to fa_icon("user") + "Worker Registration", new_admin_worker_path %></span>                     
+                  </li>
+                  <li>                     
+                          <span><%= link_to fa_icon("users") + "Clients", admin_clients_path %></span>                           
+                  </li>
+                  <li>                     
+                          <span><%= link_to fa_icon("user") + "Client Registration", new_admin_client_path %></span>                       
+                  </li>
+                  <li>                     
+                          <span><%= link_to fa_icon("user") + "Admins", admin_list_path %></span>                        
+                  </li>
+                  <li>                     
+                          <span><%= link_to fa_icon("user") + "Admin Registration", admin_registration_path %></span>                     
+                  </li>
+                  <li>
+                    <span>
+                      <%= link_to fa_icon("sort-numeric-desc") + " Score Board", admin_referrals_path %>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <%= link_to fa_icon("files-o") + " Generate Invoice", admin_requests_for_invoice_path %>
+                    </span>
+                  </li>
+              </ul>
+              
+          </div>
+      </aside>
+      
+      
+      
+      <section id="main-content">
+          <section class="wrapper">            
+              
+              <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header"><i class="fa fa-laptop"></i><%= current_client.first_name %> <%= current_client.last_name %>, Welcome to Spring Command Center</h3>
+                    <ol class="breadcrumb">
+                        <li><%= breadcrumbs pretext: "", display_single_fragment: true %></li>                          
+                    </ol>
+                </div>
+            </div>
+              
+            
+            
+           <%= yield %>  
+            
+          
+          
+            
+              
+                
+            
+                    
+            
+          
+  </section>
+  <script>
+
+    setTimeout(fade_out, 5000);
+
+    function fade_out() {
+     $("#flashmessage").fadeOut().empty();
+   }
+
+ </script>
+  
+  </body>
+
+</html>

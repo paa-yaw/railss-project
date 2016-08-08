@@ -1,0 +1,139 @@
+<% breadcrumb :show_worker, @worker%>
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
+
+
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <% if @worker.requests.any? %>
+          <h1><%= @worker.first_name %> has already been assigned!</h1>
+          <% else %>
+          <h1><%= @worker.first_name %> is currently not assigned!</h1>
+          <% end %>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+          <% if @worker.photo.present? %>
+            <div class="col-md-3 col-lg-3 " align="center"><%= link_to (image_tag @worker.photo_url(:thumb)), @worker.photo.url, class: "img-circle img-responsive" %></div>
+          <% else %>
+          <div class="col-md-3 col-lg-3 " align="center">
+           <h2>No Photo</h2>
+           </div>
+          <% end %>  
+
+            <div class=" col-md-9 col-lg-9 "> 
+              <table class="table table-user-information">
+                <tbody>
+                  <tr>
+                    <td><strong>First Name:</strong></td>
+                    <td><%= @worker.first_name %></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Last Name:</strong></td>
+                    <td><%= @worker.last_name %></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Email:</strong></td>
+                    <td><%= @worker.email %></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Age:</strong></td>
+                    <td><%= @worker.age %></td>
+                  </tr>
+
+                  <tr>
+                    <tr>
+                      <td><strong>Sex:</strong></td>
+                      <td> <%= @worker.sex %></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Phone Number:</strong></td>
+                      <td><%= @worker.phone_number %></td>
+                    </tr>
+                    <td><strong>Location:</strong></td>
+                    <td> <%= @worker.location %>
+                    </td>
+
+                  </tr>
+                  <tr>
+                    <td><strong>Phone Number:</strong></td>
+                    <td><%= @worker.phone_number %></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Education:</strong></td>
+                    <td><%= @worker.education %></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Salary Expectation:</strong></td>
+                    <td> GHS <%= @worker.minimum_wage %></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Work Experience:</strong></td>
+                    <td><%= @worker.experience %></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Extra Info:</strong></td>
+                    <td> <%= @worker.extra_info %></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Rating:</strong></td>
+                    <td><div class="star-rating" data-score= <%= @worker.average_rating %>></div></td>
+                  </tr>
+                  <% if @worker.status == "verified" %>
+                  <tr>
+                    <td><strong>Status:</strong></td>
+                    <td><span class="label label-success"><i class="fa fa-check-circle" aria-hidden="true"></i> <%= @worker.status.upcase %></span></td>
+                  </tr>
+                  <% else %>
+                  <tr>
+                    <td><strong>Status:</strong></td>
+                    <td><span class="label label-danger"><i class="fa fa-ban" aria-hidden="true"></i> <%= @worker.status.upcase %></span></td>
+                  </tr>
+                  <% end %>
+                  <!-- <tr>
+                    <td><strong>Attachment</strong></td>
+                    <td>
+                      <#% if @worker.attachment.present? %>
+                      <p>
+                      <#%= link_to (image_tag @worker.attachment_url(:thumb)), @worker.attachment.url %></p>
+                        <%#= link_to File.basename(@worker.attachment.url), @worker.attachment.url %>
+                        (<%= number_to_human_size(@worker.attachment.size) %>)
+                     
+                      <#% end %>
+                    </td>
+                  </tr> -->
+
+
+                </tbody>
+              </table>
+
+              <h3><%= link_to fa_icon("pencil") + " Edit Worker", edit_admin_worker_path(@worker), class: "btn  btn-primary" %> <%= link_to fa_icon("arrow-circle-left") + " Back", :back, class: "btn btn-primary" %>
+                <% if @worker.reports.any? %>
+                  <%= link_to fa_icon("flag") + " View Report(s)", admin_worker_reports_path(@worker), class: "btn btn-danger" %>
+                <% end %> 
+              </h3>
+            </div>
+          </div>
+        </div>            
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<script>
+  $('.star-rating').raty({
+    path: '/assets/', 
+    readOnly: true,
+    score: function() {
+      return $(this).attr('data-score');
+    }
+  });
+</script> 
+
+
+
+

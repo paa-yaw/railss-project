@@ -1,0 +1,25 @@
+<div class="container-fluid" >
+      <div class="row">
+      <!-- <div class="col-sm-6 form-box wow fadeInUp content-box"></div> -->
+
+       <div class="col-sm-5 col-sm-offset-3 form-box form-content signUpIn">
+
+          <h2>Resend unlock instructions</h2>
+
+          <%= form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f| %>
+            <%= devise_error_messages! %>
+
+            <div class="field">
+              <%= f.label :email %><br />
+              <%= f.email_field :email, autofocus: true %>
+            </div>
+
+            <div class="actions">
+              <%= f.submit "Resend unlock instructions" %>
+            </div>
+          <% end %>
+
+          <%= render "clients/shared/links" %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,413 @@
+<%breadcrumb :client_request, @client%>
+<h1><%= @client.first_name %>'s requests</h1>
+
+<% if @client.requests.empty? %>
+<h3>No requests at the moment</h3>
+
+<% else %>
+
+<div class="row">
+	<div class="col-lg-12 col-md-12">  
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h2><i class="fa fa-user"></i><strong><%= @client.first_name %>'s requests</strong></h2>
+			</div>
+			<div class="panel-body">
+				<table class="table bootstrap-datatable countries">
+					<thead>
+						<tr>
+							<th></th>
+							<th>Request ID</th>
+							<th>House Details</th>
+							<th>Extra Services</th>
+							<th>Selected Days</th>
+							<th>Frequency</th>
+							<th>Total Price</th>
+							<th>Date</th>
+							<th>Time</th>
+							<th>Created At</th>
+							<th>Status</th>
+						</tr>
+					</thead>  
+
+					<% @client.requests.each do |client_request| %>
+					<% if client_request.status == "resolved" %>
+
+					<tbody>
+						<tr>
+							<td></td>
+							<td><%= client_request.id %></td>
+							<td>
+								
+								<p><%= pluralize(client_request.bedrooms, "bedroom") %>,</p>
+								 <p><%= pluralize(client_request.bathrooms, "bathroom") %>,</p>
+								 <p><%= pluralize(client_request.kitchens, "kitchen") %>,</p>
+								 <p><%= pluralize(client_request.hall, "living room") %></p>
+							</td>
+							<td>
+								<% client_request.extra_services.each do |services| %>
+								     <% if services == 15.00 %>
+								     <p>Compound Cleaning(GHS 15.00)</p>
+								     <% end %>
+
+								     <% if services == 10.01 %>
+								     <p>Fridge(GHS 10.00)</p>
+								     <% end %>
+
+								     <% if services == 10.00 %>
+								     <p>Storeroom(GHS 10.00)</p>
+								     <% end %>
+								     <% end %>
+							</td>
+							<td>
+								<% client_request.weekdays.each do |day| %>
+								<p><%= day %></p>
+								<% end %>
+							</td>
+							<td>
+								<% if client_request.frequency == 150.00 %>
+								<p>One Off(GHS 60.00)</p>
+								<% elsif client_request.frequency == 200.00 %>
+								<p>Weekly(GHS 150.00)</p>
+								<% elsif client_request.frequency == 500.00 %>
+								<p>Monthly(GHS 500.00)</p>
+								<% end %>
+							</td>
+							<td>
+								<p>
+									<% @rooms = client_request.bathrooms + client_request.bedrooms + client_request.hall + client_request.kitchens %>
+
+									<% extra_services = 0 %>
+									<% a = client_request.extra_services.length.to_i - 1 %>
+
+									<% for i in 0...a %>
+									<% extra_services += client_request.extra_services[i].to_i %> 
+									<% end %>
+
+									<% one_off_package = 150.00 %>
+									<% weekly_package = 200.00 %>
+									<% monthly_package = 500.00 %> 
+
+
+									<% if client_request.frequency == one_off_package %>
+
+
+									<% price = one_off_package + (@rooms - 4)*5 + extra_services %>
+									 GHS <%= price %> 
+
+									<% elsif client_request.frequency == weekly_package %>
+
+									<% price = weekly_package  + (@rooms - 4)*5 + extra_services %>
+									 GHS <%= price %> 
+
+									<% elsif  client_request.frequency == monthly_package %>
+
+									<% if @rooms > 8 %>
+									<% price = monthly_package + (@rooms - 8)*5 + extra_services %>
+									 GHS  <%= price %> 
+
+									<% elsif @rooms <= 8 %>
+									<% price = monthly_package + extra_services %>
+									 GHS <%= price %> 
+
+									<% end %>         
+
+									<% end %>
+
+								<p>
+
+							</td>
+							<td><p><%= client_request.date.to_date.strftime("%B %d, %Y") %></p></td>
+							<td><p><%= client_request.time.strftime("%T") %></p></td>
+							<td><%= client_request.created_at %></td>
+							<td><%= link_to "resolved", admin_client_request_path(@client,client_request), class: "btn btn-success" %></td>
+						</tr>
+						<% elsif client_request.status == "unresolved"%> 
+						<tr>
+						    <td></td>
+						    <td><%= client_request.id %></td>
+							<td>								
+								<p><%= pluralize(client_request.bedrooms, "bedroom") %>,</p>
+								 <p><%= pluralize(client_request.bathrooms, "bathroom") %>,</p>
+								 <p><%= pluralize(client_request.kitchens, "kitchen") %>,</p>
+								 <p><%= pluralize(client_request.hall, "living room") %></p>
+							</td>
+							<td>
+								<% client_request.extra_services.each do |services| %>
+								     <% if services == 15.00 %>
+								     <p>Compound Cleaning(GHS 15.00)</p>
+								     <% end %>
+
+								     <% if services == 10.01 %>
+								     <p>Fridge(GHS 10.00)</p>
+								     <% end %>
+
+								     <% if services == 10.00 %>
+								     <p>Storeroom(GHS 10.00)</p>
+								     <% end %>
+								     <% end %>
+							</td>
+							<td>
+								<% client_request.weekdays.each do |day| %>
+								<p><%= day %></p>
+								<% end %>
+							</td>
+							<td>
+								<% if client_request.frequency == 150.00 %>
+								<p>One Off(GHS 60.00)</p>
+								<% elsif client_request.frequency == 200.00 %>
+								<p>Weekly(GHS 150.00)</p>
+								<% elsif client_request.frequency == 500.00 %>
+								<p>Monthly(GHS 500.00)</p>
+								<% end %>
+							</td>
+							<td>
+								<p>
+									<% @rooms = client_request.bathrooms + client_request.bedrooms + client_request.hall + client_request.kitchens %>
+
+									<% extra_services = 0 %>
+									<% a = client_request.extra_services.length.to_i - 1 %>
+
+									<% for i in 0...a %>
+									<% extra_services += client_request.extra_services[i].to_i %> 
+									<% end %>
+
+									<% one_off_package = 150.00 %>
+									<% weekly_package = 200.00 %>
+									<% monthly_package = 500.00 %> 
+
+
+									<% if client_request.frequency == one_off_package %>
+
+
+									<% price = one_off_package + (@rooms - 4)*5 + extra_services %>
+									 GHS <%= price %> 
+
+									<% elsif client_request.frequency == weekly_package %>
+
+									<% price = weekly_package  + (@rooms - 4)*5 + extra_services %>
+									 GHS <%= price %> 
+
+									<% elsif  client_request.frequency == monthly_package %>
+
+									<% if @rooms > 8 %>
+									<% price = monthly_package + (@rooms - 8)*5 + extra_services %>
+									 GHS  <%= price %> 
+
+									<% elsif @rooms <= 8 %>
+									<% price = monthly_package + extra_services %>
+									 GHS <%= price %> 
+
+									<% end %>         
+
+									<% end %>
+
+								<p>
+								
+							</td>
+							<td><p><%= client_request.date.to_date.strftime("%B %d, %Y") %></p></td>
+							<td><p><%= client_request.time.strftime("%l %M %p")%></p></td>
+							<td><%= client_request.created_at %></td>
+							<td><%= link_to "unresolved", admin_client_request_path(@client, client_request), class: "btn btn-danger" %></td>
+						</tr>
+						<% elsif client_request.status == "done"%> 
+							<tbody>
+						<tr>
+							<td></td>
+							<td><%= client_request.id %></td>
+							<td>
+								
+								<p><%= pluralize(client_request.bedrooms, "bedroom") %>,</p>
+								 <p><%= pluralize(client_request.bathrooms, "bathroom") %>,</p>
+								 <p><%= pluralize(client_request.kitchens, "kitchen") %>,</p>
+								 <p><%= pluralize(client_request.hall, "living room") %></p>
+							</td>
+							<td>
+								<% client_request.extra_services.each do |services| %>
+								     <% if services == 15.00 %>
+								     <p>Compound Cleaning(GHS 15.00)</p>
+								     <% end %>
+
+								     <% if services == 10.01 %>
+								     <p>Fridge(GHS 10.00)</p>
+								     <% end %>
+
+								     <% if services == 10.00 %>
+								     <p>Storeroom(GHS 10.00)</p>
+								     <% end %>
+								     <% end %>
+							</td>
+							<td>
+								<% client_request.weekdays.each do |day| %>
+								<p><%= day %></p>
+								<% end %>
+							</td>
+							<td>
+								<% if client_request.frequency == 150.00 %>
+								<p>One Off(GHS 60.00)</p>
+								<% elsif client_request.frequency == 200.00 %>
+								<p>Weekly(GHS 150.00)</p>
+								<% elsif client_request.frequency == 500.00 %>
+								<p>Monthly(GHS 500.00)</p>
+								<% end %>
+							</td>
+							<td>
+								<p>
+									<% @rooms = client_request.bathrooms + client_request.bedrooms + client_request.hall + client_request.kitchens %>
+
+									<% extra_services = 0 %>
+									<% a = client_request.extra_services.length.to_i - 1 %>
+
+									<% for i in 0...a %>
+									<% extra_services += client_request.extra_services[i].to_i %> 
+									<% end %>
+
+									<% one_off_package = 150.00 %>
+									<% weekly_package = 200.00 %>
+									<% monthly_package = 500.00 %> 
+
+
+									<% if client_request.frequency == one_off_package %>
+
+
+									<% price = one_off_package + (@rooms - 4)*5 + extra_services %>
+									 GHS <%= price %> 
+
+									<% elsif client_request.frequency == weekly_package %>
+
+									<% price = weekly_package  + (@rooms - 4)*5 + extra_services %>
+									 GHS <%= price %> 
+
+									<% elsif  client_request.frequency == monthly_package %>
+
+									<% if @rooms > 8 %>
+									<% price = monthly_package + (@rooms - 8)*5 + extra_services %>
+									 GHS  <%= price %> 
+
+									<% elsif @rooms <= 8 %>
+									<% price = monthly_package + extra_services %>
+									 GHS <%= price %> 
+
+									<% end %>         
+
+									<% end %>
+
+								<p>
+
+							</td>
+							<td><p><%= client_request.date.to_date.strftime("%B %d, %Y") %></p></td>
+							<td><p><%= client_request.time.strftime("%l %M %p")%></p></td>
+							<td><%= client_request.created_at %></td>
+							<td><%= link_to "resolved", admin_client_request_path(@client,client_request), class: "btn btn-success" %></td>
+						</tr>
+						<% elsif client_request.status == "redo" %>
+						<tbody>
+						<tr>
+							<td></td>
+							<td><%= client_request.id %></td>
+							<td>
+								
+								<p><%= pluralize(client_request.bedrooms, "bedroom") %>,</p>
+								 <p><%= pluralize(client_request.bathrooms, "bathroom") %>,</p>
+								 <p><%= pluralize(client_request.kitchens, "kitchen") %>,</p>
+								 <p><%= pluralize(client_request.hall, "living room") %></p>
+							</td>
+							<td>
+								<% client_request.extra_services.each do |services| %>
+								     <% if services == 15.00 %>
+								     <p>Compound Cleaning(GHS 15.00)</p>
+								     <% end %>
+
+								     <% if services == 10.01 %>
+								     <p>Fridge(GHS 10.00)</p>
+								     <% end %>
+
+								     <% if services == 10.00 %>
+								     <p>Storeroom(GHS 10.00)</p>
+								     <% end %>
+								     <% end %>
+							</td>
+							<td>
+								<% client_request.weekdays.each do |day| %>
+								<p><%= day %></p>
+								<% end %>
+							</td>
+							<td>
+								<% if client_request.frequency == 150.00 %>
+								<p>One Off(GHS 60.00)</p>
+								<% elsif client_request.frequency == 200.00 %>
+								<p>Weekly(GHS 150.00)</p>
+								<% elsif client_request.frequency == 500.00 %>
+								<p>Monthly(GHS 500.00)</p>
+								<% end %>
+							</td>
+							<td>
+								<p>
+									<% @rooms = client_request.bathrooms + client_request.bedrooms + client_request.hall + client_request.kitchens %>
+
+									<% extra_services = 0 %>
+									<% a = client_request.extra_services.length.to_i - 1 %>
+
+									<% for i in 0...a %>
+									<% extra_services += client_request.extra_services[i].to_i %> 
+									<% end %>
+
+									<% one_off_package = 150.00 %>
+									<% weekly_package = 200.00 %>
+									<% monthly_package = 500.00 %> 
+
+
+									<% if client_request.frequency == one_off_package %>
+
+
+									<% price = one_off_package + (@rooms - 4)*5 + extra_services %>
+									 GHS <%= price %> 
+
+									<% elsif client_request.frequency == weekly_package %>
+
+									<% price = weekly_package  + (@rooms - 4)*5 + extra_services %>
+									 GHS <%= price %> 
+
+									<% elsif  client_request.frequency == monthly_package %>
+
+									<% if @rooms > 8 %>
+									<% price = monthly_package + (@rooms - 8)*5 + extra_services %>
+									 GHS  <%= price %> 
+
+									<% elsif @rooms <= 8 %>
+									<% price = monthly_package + extra_services %>
+									 GHS <%= price %> 
+
+									<% end %>         
+
+									<% end %>
+
+								<p>
+
+							</td>
+							<td><p><%= client_request.date.to_date.strftime("%B %d, %Y") %></p></td>
+							<td><p><%= client_request.time.strftime("%l %M %p")%></p></td>
+							<td><%= client_request.created_at %></td>
+							<td><%= link_to "resolved", admin_client_request_path(@client,client_request), class: "btn btn-success" %></td>
+						</tr>
+							
+					</tbody>
+					<% end %>  
+					<% end %>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>	
+
+<% end %>
+
+
+
+
+<div class="row">
+<div class="container">
+<%= link_to fa_icon("plus") + "Create Request", new_admin_client_request_path(@client), class: "btn btn-primary" %> 
+<%= link_to fa_icon("arrow-circle-left") + " Back", :back, class: "btn btn-primary" %>
+</div>
+</div>

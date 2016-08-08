@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Hi, <%= @recipient.first_name %></h1>
+    <p>
+      <%= @client.first_name || @client.email %> just signed up to springgh.com.
+    </p>
+   
+     <p>Below is a summary of <%= @client.first_name %>'s details </p>
+
+     <h2> Client's Detail </h2>
+      
+      <p>first name: <%= @client.first_name %></p>
+      <p>last name: <%= @client.last_name %></p>
+      <p>email: <%= @client.email %></p>
+      <p>location: <%= @client.location %></p>
+      <p>phone number <%= @client.phone_number %></p>
+    
+    <p>
+      To login to the site, just follow this link: <%= @url %>.
+    </p>
+    <p>Thanks for joining and have a great day!</p>
+  </body>
+</html>
